@@ -119,7 +119,7 @@ help () {
   echo "      print version"
   echo
   echo "Example:"
-  echo "  autopull.sh ~/repo # default time: 1 day"
+  echo "  autopull.sh ~/repo # pulling ~/repo if it has been 1 day since last pull"
   echo "  autopull.sh -H ~/repo # pull if it has been 1 hour since last pull"
   echo
   echo "LICENSE:"
