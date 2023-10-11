@@ -4,6 +4,7 @@
 # if one argument is supplied, pull the repo
 # if more than one argument is supplied, parse the options
 
+
 # version number
 autopull_VERSION_MAJOR=0
 autopull_VERSION_MINOR=1
@@ -12,6 +13,9 @@ autopull_LISENCE="GNU GPLv3"
 # Core functionalities
 # cache file record the time of git pull to determine if the directory shall be pulled
 cachedFileDir="$HOME/.cache/autopull/"
+
+lockFileName="autopull.lock"
+lockFilePath="${cachedFileDir}${lockFileName}"
 
 #Defualt frequency is 1 day
 checkTimeCommand="date -Idate"
@@ -138,7 +142,6 @@ fi
 while [ $# -gt 0 ]; do 
   case $1 in 
     -D|--day)
-      echo day
       checkTimeCommand="date -Idate"
       shift
       ;;
@@ -174,6 +177,18 @@ while [ $# -gt 0 ]; do
   esac
 done
 
+# start of pulling
+
+# avoid parallel execution:
+
+if [ -f $lockFilePath ]; then
+	exit 1;
+fi
+
+cd $cachedFileDir
+touch $lockFileName
+cd $HOME
+
 for i in $pullDirCandidates; do
   # if the last characters of the string is '/', remove it
   while [ `echo $i | tail -c 2` = '/' ]; do
@@ -181,3 +196,5 @@ for i in $pullDirCandidates; do
   done
   pullRepo $i
 done
+
+rm $lockFilePath
