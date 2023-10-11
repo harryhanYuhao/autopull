@@ -1,6 +1,6 @@
 all:
 
 install:
-	mkdir -p ~/.local/bin/autopull
-	cp ./autopull.sh ~/.local/bin/autopull
+	mkdir -p ~/.local/bin/
+	cp ./autopull.sh -t ~/.local/bin/
 	chmod +x ~/.local/bin/autopull
