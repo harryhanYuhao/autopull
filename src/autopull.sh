@@ -83,6 +83,20 @@ pullRepo () {
   fi
 }
 
+atomic_lock () {
+  if [ -f $lockFilePath ]; then
+	exit 1;
+  fi
+  mkdir -p $cachedFileDir
+  cd $cachedFileDir
+  touch $lockFileName
+  cd $HOME
+}
+
+atomic_unlock () {
+  rm $lockFilePath
+}
+
 # Auxiliary functions
 # print version 
 
@@ -185,9 +199,7 @@ if [ -f $lockFilePath ]; then
 	exit 1;
 fi
 
-cd $cachedFileDir
-touch $lockFileName
-cd $HOME
+atomic_lock
 
 for i in $pullDirCandidates; do
   # if the last characters of the string is '/', remove it
@@ -197,4 +209,4 @@ for i in $pullDirCandidates; do
   pullRepo $i
 done
 
-rm $lockFilePath
+atomic_unlock
