@@ -209,4 +209,14 @@ for i in $pullDirCandidates; do
   pullRepo $i
 done
 
+if [ -z "${VAR}" ]; then
+	echo "autopull no repo updated!" 
+	echo "autopull no repo updated!" | logger
+else 
+	echo autopull has pulled
+	echo ${pullDirCandidates} 
+	echo autopull has pulled | logger
+	echo ${pullDirCandidates} | logger
+fi
+
 atomic_unlock
